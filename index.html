@@ -7,12 +7,36 @@
   <meta name="description" content="PraxisTutor develops educational tools for reflective thinking and safe, powerful use of AI, including Second Lens—a GPT app that clarifies assumptions and expands understanding.">
 
   <style>
-    /* --- Base Styles --- */
+    /* Base Theme Variables */
+    :root {
+      --bg: #fafafa;
+      --text: #222;
+      --accent: #1F4B99;
+      --section-alt: #f0f4fc;
+      --card-bg: #ffffff;
+      --border: #e2e2e2;
+    }
+
+    /* Dark Theme Variables */
+    :root.dark {
+      --bg: #101418;
+      --text: #e9ecf1;
+      --accent: #7ca7ff;
+      --section-alt: #181e24;
+      --card-bg: #1d232a;
+      --border: #2b333d;
+    }
+
+    /* Transition */
+    * {
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
     body {
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      color: #222;
-      background: #fafafa;
+      color: var(--text);
+      background: var(--bg);
       line-height: 1.6;
     }
 
@@ -23,7 +47,7 @@
     }
 
     h1, h2, h3 {
-      color: #1F4B99;
+      color: var(--accent);
       margin-top: 0;
       line-height: 1.25;
     }
@@ -47,44 +71,54 @@
       font-size: 1.1rem;
     }
 
-    /* --- Hero Section --- */
+    /* Hero Section */
     .hero {
       text-align: center;
       padding: 100px 24px 80px;
     }
 
-    .hero p {
-      max-width: 700px;
-      margin: 0.5rem auto 1.5rem;
-      font-size: 1.2rem;
-      color: #444;
-    }
-
-    /* --- Button Styles --- */
+    /* Button */
     .btn {
       display: inline-block;
       padding: 12px 22px;
-      background: #1F4B99;
+      background: var(--accent);
       color: white;
       text-decoration: none;
       border-radius: 6px;
       font-size: 1.1rem;
       margin-top: 10px;
-      transition: background 0.2s ease;
+      transition: opacity 0.2s ease;
     }
-
     .btn:hover {
-      background: #173a77;
+      opacity: 0.85;
     }
 
-    /* --- Section backgrounds --- */
+    /* Toggle Button */
+    .toggle-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999;
+    }
+
+    .toggle-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    /* Alt section */
     .alt {
-      background: #f0f4fc;
-      border-top: 1px solid #e1e7f2;
-      border-bottom: 1px solid #e1e7f2;
+      background: var(--section-alt);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
-    /* --- Three-column lists (responsive) --- */
+    /* Columns */
     .columns {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -93,35 +127,34 @@
     }
 
     .card {
-      background: white;
+      background: var(--card-bg);
       padding: 20px;
       border-radius: 8px;
-      border: 1px solid #e2e2e2;
+      border: 1px solid var(--border);
     }
 
-    /* Footer */
     footer {
       text-align: center;
       padding: 40px;
       font-size: 0.95rem;
-      color: #666;
-    }
-
-    footer a {
-      color: #1F4B99;
-      text-decoration: none;
+      color: var(--text);
     }
   </style>
 </head>
 
 <body>
 
+  <!-- Dark Mode Toggle -->
+  <div class="toggle-container">
+    <button class="toggle-btn" id="themeToggle">🌙</button>
+  </div>
+
   <!-- HERO -->
   <header class="hero">
     <h1>PraxisTutor</h1>
     <p>Tools for reflective thinking, modern AI literacy, and safe, powerful use of large language models.</p>
 
-    <a class="btn" href="https://chatgpt.com/g/g-692293ec2dd88191bc6762b96c626f37-second-lens" target="_blank">
+    <a class="btn" href="https://chat.openai.com/g/gpt_YOUR_ID_HERE" target="_blank">
       Open Second Lens (GPT App)
     </a>
   </header>
@@ -162,7 +195,7 @@
     </ul>
 
     <p style="margin-top: 20px;">
-      <a class="btn" href="https://chatgpt.com/g/g-692293ec2dd88191bc6762b96c626f37-second-lens" target="_blank">
+      <a class="btn" href="https://chat.openai.com/g/gpt_YOUR_ID_HERE" target="_blank">
         Try Second Lens
       </a>
     </p>
@@ -177,11 +210,13 @@
         <p>Learn safe and effective AI-supported study practices,
            explore academic fit, and develop reflective learning habits.</p>
       </div>
+
       <div class="card">
         <h3>New Grads & Professionals</h3>
         <p>Clarify projects, evaluate risks, and build structured reasoning workflows
            supported by modern tools.</p>
       </div>
+
       <div class="card">
         <h3>Curious Adults</h3>
         <p>Strengthen AI literacy, question assumptions, and engage with LLMs
@@ -225,8 +260,34 @@
   <!-- FOOTER -->
   <footer>
     <p>© <span id="year"></span> PraxisTutor.org — All rights reserved.</p>
-    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
   </footer>
+
+  <!-- Dark Mode Script -->
+  <script>
+    const root = document.documentElement;
+    const btn = document.getElementById("themeToggle");
+
+    // Load theme from localStorage
+    if (localStorage.getItem("theme") === "dark") {
+      root.classList.add("dark");
+      btn.textContent = "☀️";
+    }
+
+    btn.addEventListener("click", () => {
+      root.classList.toggle("dark");
+
+      if (root.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+        btn.textContent = "☀️";
+      } else {
+        localStorage.setItem("theme", "light");
+        btn.textContent = "🌙";
+      }
+    });
+
+    // Update footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 
 </body>
 </html>
