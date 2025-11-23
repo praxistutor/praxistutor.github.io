@@ -7,8 +7,18 @@
   <meta name="description" content="PraxisTutor develops educational tools for reflective thinking and safe, powerful use of AI, including Second Lens—a GPT app that clarifies assumptions and expands understanding.">
 
   <style>
-    /* Base Theme Variables */
+    /* --- Dark Mode is Default --- */
     :root {
+      --bg: #101418;
+      --text: #e9ecf1;
+      --accent: #7ca7ff;
+      --section-alt: #181e24;
+      --card-bg: #1d232a;
+      --border: #2b333d;
+    }
+
+    /* --- Light Mode Override --- */
+    :root.light {
       --bg: #fafafa;
       --text: #222;
       --accent: #1F4B99;
@@ -17,29 +27,12 @@
       --border: #e2e2e2;
     }
 
-    /* Dark Theme Variables */
-    :root.dark {
-      --bg: #101418;
-      --text: #e9ecf1;
-      --accent: #7ca7ff;
-      --section-alt: #181e24;
-      --card-bg: #1d232a;
-      --border: #2b333d;
-    }
-    
-    html {
-      opacity: 0;
-    }
-    html.ready {
-      opacity: 1;
-      transition: opacity 0.2s ease;
-    }
-
-    /* Transition */
+    /* Transition for smooth toggle */
     * {
       transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
+    /* Base Layout */
     body {
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -60,32 +53,19 @@
       line-height: 1.25;
     }
 
-    h1 {
-      font-size: 2.4rem;
-      margin-bottom: 0.25rem;
-    }
+    h1 { font-size: 2.4rem; margin-bottom: 0.25rem; }
+    h2 { font-size: 1.9rem; margin-bottom: 0.6rem; }
+    h3 { font-size: 1.35rem; margin-bottom: 0.4rem; }
 
-    h2 {
-      font-size: 1.9rem;
-      margin-bottom: 0.6rem;
-    }
+    p, li { font-size: 1.1rem; }
 
-    h3 {
-      font-size: 1.35rem;
-      margin-bottom: 0.4rem;
-    }
-
-    p, li {
-      font-size: 1.1rem;
-    }
-
-    /* Hero Section */
+    /* Hero */
     .hero {
       text-align: center;
       padding: 100px 24px 80px;
     }
 
-    /* Button */
+    /* Buttons */
     .btn {
       display: inline-block;
       padding: 12px 22px;
@@ -101,7 +81,7 @@
       opacity: 0.85;
     }
 
-    /* Toggle Button */
+    /* Toggle */
     .toggle-container {
       position: fixed;
       top: 20px;
@@ -119,14 +99,14 @@
       font-size: 1.1rem;
     }
 
-    /* Alt section */
+    /* Alternate background sections */
     .alt {
       background: var(--section-alt);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
 
-    /* Columns */
+    /* Cards + columns */
     .columns {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -141,6 +121,7 @@
       border: 1px solid var(--border);
     }
 
+    /* Footer */
     footer {
       text-align: center;
       padding: 40px;
@@ -152,9 +133,9 @@
 
 <body>
 
-  <!-- Dark Mode Toggle -->
+  <!-- Dark/Light Toggle -->
   <div class="toggle-container">
-    <button class="toggle-btn" id="themeToggle">🌙</button>
+    <button class="toggle-btn" id="themeToggle">☀️</button>
   </div>
 
   <!-- HERO -->
@@ -270,35 +251,38 @@
     <p>© <span id="year"></span> PraxisTutor.org — All rights reserved.</p>
   </footer>
 
-  <!-- Dark Mode Script -->
+  <!-- Scripts -->
   <script>
     const root = document.documentElement;
     const btn = document.getElementById("themeToggle");
 
-    // Load theme from localStorage (overrides default)
+    /* Default = dark (already applied via class="dark").
+       If user previously selected light, override it. */
     const saved = localStorage.getItem("theme");
     if (saved === "light") {
+      root.classList.add("light");
       root.classList.remove("dark");
-      btn.textContent = "🌙";
-    } else {
-      // Default is dark
-      root.classList.add("dark");
-      btn.textContent = "☀️";
+      btn.textContent = "🌙";  // switching will return to dark
     }
 
+    /* Toggle */
     btn.addEventListener("click", () => {
-      root.classList.toggle("dark");
-
-      if (root.classList.contains("dark")) {
+      if (root.classList.contains("light")) {
+        // go dark
+        root.classList.remove("light");
+        root.classList.add("dark");
         localStorage.setItem("theme", "dark");
         btn.textContent = "☀️";
       } else {
+        // go light
+        root.classList.remove("dark");
+        root.classList.add("light");
         localStorage.setItem("theme", "light");
         btn.textContent = "🌙";
       }
     });
 
-    // Update footer year
+    /* Footer year */
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 
