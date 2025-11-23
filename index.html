@@ -17,16 +17,6 @@
       --border: #2b333d;
     }
 
-    /* --- Light Mode Override --- */
-    :root.light {
-      --bg: #fafafa;
-      --text: #222;
-      --accent: #1F4B99;
-      --section-alt: #f0f4fc;
-      --card-bg: #ffffff;
-      --border: #e2e2e2;
-    }
-
     /* Transition for smooth toggle */
     * {
       transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
@@ -147,11 +137,6 @@
 </head>
 
 <body>
-
-  <!-- Dark/Light Toggle -->
-  <div class="toggle-container">
-    <button class="toggle-btn" id="themeToggle">☀️</button>
-  </div>
 
   <!-- HERO -->
   <header class="hero">
@@ -274,35 +259,7 @@
 
   <!-- Scripts -->
   <script>
-    const root = document.documentElement;
-    const btn = document.getElementById("themeToggle");
-
-    /* Default = dark (already applied via class="dark").
-       If user previously selected light, override it. */
-    const saved = localStorage.getItem("theme");
-    if (saved === "light") {
-      root.classList.add("light");
-      root.classList.remove("dark");
-      btn.textContent = "🌙";  // switching will return to dark
-    }
-
-    /* Toggle */
-    btn.addEventListener("click", () => {
-      if (root.classList.contains("light")) {
-        // go dark
-        root.classList.remove("light");
-        root.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-        btn.textContent = "☀️";
-      } else {
-        // go light
-        root.classList.remove("dark");
-        root.classList.add("light");
-        localStorage.setItem("theme", "light");
-        btn.textContent = "🌙";
-      }
-    });
-
+  
     /* Footer year */
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
