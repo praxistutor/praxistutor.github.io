@@ -26,6 +26,14 @@
       --card-bg: #1d232a;
       --border: #2b333d;
     }
+    
+    html {
+      opacity: 0;
+    }
+    html.ready {
+      opacity: 1;
+      transition: opacity 0.2s ease;
+    }
 
     /* Transition */
     * {
